@@ -1,4 +1,7 @@
 package es.unileon.prg.date;
+
+import java.util.Random;
+
 /*
 *Clase Date para la practica7
 *author
@@ -51,6 +54,34 @@ private String getDaysUntilMonth()
 return string2.toString();
 }
 
+private int attemptsToSameDate()
+{	
+	Random numero = new Random(System.currentTimeMillis());
+	Date newDate;
+	int attempts = 0;
+	boolean ender = false;
+	do
+	{
+		try
+		{
+			newDate = new Date(numero.nextInt(31),numero.nextInt(31),this.year);
+			if (isSameDate(newDate) == false)
+			{
+			attempts++;
+			}	
+			else
+			{
+			ender = true;
+			}
+		}
+		catch(DateException e)
+		{
+		attempts++;	
+		}
+	}	
+while(ender == false);
+return attempts;		
+}
 
 private String getMonthsWithSameDays()
 {
@@ -79,53 +110,33 @@ private int getDaysUntilYear()
 }	
 	return daysNumbers;
 }
-private String getWeek(int getDaysOfMonth)
+
+private String getWeek(int day)
 {
 	String week = " ";
-	switch(getDaysOfMonth)
+	int dia = day + getDaysOfMonth(month);
+	dia = dia % 7;
+	switch(dia)
 {
-	case 1: //next
-	case 8: //next
-	case 15: //next
-	case 22: //next
-	case 30: 
+	case 2: 
 	week = "Martes";
 	break;
-	case 2: //next
-	case 9: //next
-	case 16: //next
-	case 23: //next
-	case 31:
+	case 3:
 	week = "Miercoles";
 	break;
-	case 3: //next
-	case 10: //next
-	case 17:  //next
-	case 24: 
+	case 4: 
 	week = "Jueves";
 	break;
-	case 4: //next
-	case 11: //next
-	case 18: //next
-	case 25:
+	case 5: 
 	week = "Viernes";
 	break;
-	case 5: //next
-	case 12: //next
-	case 19: //next
-	case 26:
+	case 6: 
 	week = "Sabado";
 	break;
-	case 6: //next
-	case 13: //next
-	case 20: //next
-	case 27:
+	case 7: 
 	week = "Domingo";
 	break;
-	case 7: //next
-	case 14: //next
-	case 21: //next
-	case 28:
+	case 1:
 	week = "Lunes";
 	break;
 }
@@ -284,6 +295,6 @@ public void setDay(int day) throws DateException
 */
 @Override
 	public String toString() {
-		return this.day + "/" + this.month + "|" + this.getNameOfMonth(month) + "/" + this.year + "\nEstación: " + this.getSeasonOfMonth(month) + this.getMonthsLeftOfYear(month) + this.getDaysUntilMonth() + this.getMonthsWithSameDays() + "\nDias hasta la fecha: " + getDaysUntilYear() + "\nDia de la semana: " + getWeek(day);
+		return this.day + "/" + this.month + "|" + this.getNameOfMonth(month) + "/" + this.year + "\nEstación: " + this.getSeasonOfMonth(month) + this.getMonthsLeftOfYear(month) + this.getDaysUntilMonth() + this.getMonthsWithSameDays() + "\nDias hasta la fecha: " + getDaysUntilYear() + "\nDia de la semana: " + getWeek(day) + "\nIntentos: " + attemptsToSameDate();
 }
 }
